@@ -16,7 +16,7 @@ This is a realtime chat web application built with Django and Channels.
 - Channels - Provides ASGI and WebSocket support
 - Redis - Message broker for Channels
 - Django Templates - For rendering HTML
-- Bootstrap - Front-end styling
+- Tailwind CSS - Front-end styling
 
 ## Usage
 
