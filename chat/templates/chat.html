@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+    <style>
+        #chat-container {
+            /* Make the chat container scrollable */
+            overflow: scroll;
+            height: 280px;
+        }
+        .show {
+            display: block;
+        }
+        .hide {
+            display: none;
+        }
+    </style>
+{% endblock extra_head %}
+    
+{% block content %}
+<div class="flex flex-col h-screen">
+  <div class="bg-gray-100 p-4 shadow">
+    {% if request.user.id == reciever.id %}
+      <h3 class="text-lg font-medium">Chat with yourself</h3>
+    {% else %}
+      <h3 class="text-lg font-medium">Chat with {{ reciever.username }}</h3>
+    {% endif %}
+  </div>
+
+  <div id="chat-container" class="flex-1 overflow-y-auto px-4 py-2">
+    {% for chat in chats %}
+      <div class="chat flex flex-col mb-4">
+        <div class="flex items-center mb-1">
+          <b class="font-medium mr-2">{{ chat.sender.user.username }}:</b>
+          <span>{{ chat.text }}</span>
+        </div>
+        <div class="text-xs text-gray-500">{{ chat.timestamp|date:'Y-m-d - h:i:s' }}</div>
+      </div>
+    {% endfor %}  
+  </div>
+
+  <div class="bg-gray-100 p-4 shadow-inner">
+    <div class="flex">
+        <input id="chat-input" class="flex-1 border rounded px-3 py-2 mr-2" />
+        <button id="send-chat" type"button" class="bg-blue-500 text-white px-4 py-2 rounded">Send</button>
+        <div>
+            <br>
+            <small id="info" class="text-red-500 text-sm mr-2 hide">Message input should not be empty.</small>
+        </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    const reciever_id = {{reciever.id}};
+    const chatContainer = document.querySelector('#chat-container');
+    const chatInput = document.querySelector('#chat-input');
+    const chatInfo = document.querySelector('#info');
+    const sendBtn = document.querySelector('#send-chat');
+
+    // WebSocket setup
+    const chatSocket = new WebSocket(
+    `ws://${window.location.host}/ws/chat/${reciever_id}/`  
+    );
+
+    // Listen for messages
+    chatSocket.addEventListener('message', (e) => {
+    const message = JSON.parse(e.data)['chatmodel'];  
+    displayMessage(message);
+    });
+
+    chatInput.addEventListener("keyup", function (event) {
+      // Check if the Enter key is pressed (key code 13)
+      if (event.keyCode === 13) {
+        // Trigger the button click event
+        sendButton.click();
+      }
+    });
+
+    // Send message
+    sendBtn.addEventListener('click', () => {
+    if(!chatInput.value) {
+        showInfo('Message input should not be empty');
+        return;
+    }
+    chatSocket.send(JSON.stringify({
+        message: chatInput.value  
+    }));
+    chatInput.value = '';
+    hideInfo();
+
+    });
+
+
+    // Helper functions
+    function displayMessage(message) {
+    const msgEl = document.createElement('div');
+    // Add message info 
+    msgEl.innerHTML = `
+        <div class="chat flex flex-col mb-4">
+          <div class="flex items-center mb-1">
+            <b class="font-medium mr-2">${message.sender_username}:</b>
+            <span>${message.text}</span>
+          </div>
+          <div class="text-xs text-gray-500">${message.timestamp}</div>
+        </div>`;
+
+    chatContainer.appendChild(msgEl);
+    }
+
+    function showInfo(text) {
+    chatInfo.textContent = text;
+    chatInfo.classList.remove('hide');  
+    }
+
+    function hideInfo() {
+    chatInfo.classList.add('hide');
+    }
+</script>
+{% endblock content %}

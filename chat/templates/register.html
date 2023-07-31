@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="max-w-md mx-auto p-8 bg-white rounded-lg shadow">
+
+  <h1 class="text-2xl font-medium text-center mb-6">Register</h1>
+
+  {% if form.non_field_errors %}
+    <div class="bg-red-100 text-red-900 p-3 rounded mb-4">
+      {{ form.non_field_errors.as_text }}  
+    </div>
+  {% endif %}
+
+  <form method="post" class="space-y-4">
+    
+    {% csrf_token %}
+
+    <div>
+      <label class="block text-gray-800">{{ form.username.label_tag }}</label>
+      {{ form.username }}
+      {% if form.username.errors %}
+        <span class="text-red-500">{{ form.username.errors.as_text }}</span>
+      {% endif %}
+    </div>
+
+    <div>
+      <label class="block text-gray-800">{{ form.email.label_tag }}</label>
+      {{ form.email }}
+    </div>
+
+    <div>
+      <label class="block text-gray-800">{{ form.password1.label_tag }}</label>
+      {{ form.password1 }}
+    </div>
+
+    <div>
+      <label class="block text-gray-800">{{ form.password2.label_tag }}</label>
+      {{ form.password2 }}
+    </div>
+
+
+    <button class="block bg-indigo-500 text-white p-2 w-full rounded" type="submit">Register</button>
+  
+  </form>
+
+</div>
+
+{% endblock %}
+    
