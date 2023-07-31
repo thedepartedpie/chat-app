@@ -6,9 +6,9 @@ This is a realtime chat web application built with Django and Channels.
 
 - User authentication system allowing users to sign up and login
 - Realtime chat using WebSocket and ASGI for messaging
-- Chat rooms that users can join and chat in 
 - One on one private messaging between users
-- Unread message counts and notifications
+- Chat rooms that users can join and chat (Coming Soon)
+- Unread message counts and notifications (Coming Soon)
 
 ## Technologies Used 
 
