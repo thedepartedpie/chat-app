@@ -33,7 +33,7 @@ The app will be running at `http://127.0.0.1:8000`
 
 ## Customizing 
 
-The main chat app logic is located in `chat/consumers.py` and `chat/views.py`. Templates are located in `templates/chat`.
+The main chat app logic is located in `chat/consumers.py` and `chat/views.py`. Templates are located in `chat/templates`.
 
 Some things you may want to customize:
 
