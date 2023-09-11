@@ -1,11 +1,10 @@
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.dispatch import receiver
-
-from .models import SenderModel, ReceiverModel, ChatKeyModel
+from chat.models import SenderModel, ReceiverModel, ChatKeyModel
 
 @receiver(post_save , sender=User)
-def new_user(sender , instance , created , **kwargs):
+def new_user(sender, instance, created, **kwargs):
     if created:
         # Create SenderModel and ReceiverModel for new User instance
         SenderModel.objects.create(user=instance)
