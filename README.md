@@ -37,7 +37,7 @@ The main chat app logic is located in `chat/consumers.py` and `chat/views.py`. T
 
 Some things you may want to customize:
 
-- Styling - templates inherit from `base.html` so you can easily update the styles
+- Styling - styles are in the static/styles folder
 - Chat features - edit the consumers to update the chat logic  
 - Data models - update `models.py` if you want to change the data structure
 
